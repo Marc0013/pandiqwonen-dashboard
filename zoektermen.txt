@@ -1,0 +1,9 @@
+# Zoektermen voor Google Trends — PandIQ Wonen
+# Pas gerust aan in Kladblok: één term per regel
+# Regels die beginnen met # worden genegeerd
+
+warmtepomp
+isolatie subsidie
+ISDE subsidie
+zonnepanelen
+energielabel woning

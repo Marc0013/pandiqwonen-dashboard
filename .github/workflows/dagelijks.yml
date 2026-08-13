@@ -1,0 +1,47 @@
+name: Dagelijkse Dashboard Update
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # 06:00 UTC = 07:00 NL tijd (winter) / 08:00 (zomer)
+  workflow_dispatch:        # Knop om handmatig te starten via GitHub
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Code ophalen
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Python instellen
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Packages installeren
+        run: pip install requests beautifulsoup4 pytrends lxml
+
+      - name: Git configureren
+        run: |
+          git config user.name "PandIQ Bot"
+          git config user.email "noreply@pandiq.nl"
+
+      - name: Site audit draaien
+        run: python site_audit.py
+
+      - name: Zoektrends ophalen
+        run: python trends.py
+
+      - name: Dashboard genereren en pushen
+        run: python generate_dashboard.py
+
+      - name: E-mail samenvatting versturen
+        env:
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+        run: python stuur_mail.py
