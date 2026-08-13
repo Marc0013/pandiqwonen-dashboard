@@ -41,7 +41,7 @@ jobs:
 
       - name: E-mail samenvatting versturen
         env:
-          MAIL_TO: ${{ secrets.MAIL_TO }}
+          MAIL_TO: info@pandiq.nl
           MAIL_FROM: ${{ secrets.MAIL_FROM }}
           MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
         run: python stuur_mail.py
